@@ -13,13 +13,13 @@ router = APIRouter(
 def build_event_response(event: Event) -> EventResponse:
     
     active_registrations = [
-        r for r in event.registration if r.status == "active" 
-    ] 
+        r for r in event.registrations if r.status == "active" 
+    ]
     total_registrations = len(active_registrations)
     available_seats = event.total_seats - total_registrations
 
     return EventResponse(
-        id=event.id
+        id=event.id,
         name=event.name,
         total_seats=event.total_seats,
         event_date=event.event_date,
@@ -43,19 +43,19 @@ def create_event(
     - **event_date**: Must be in the future
     """
 
-    existing = db.query(Event).filter(Event.name == event_date.name).first()
+    existing = db.query(Event).filter(Event.name == event_data.name).first()
     if existing:
         raise HTTPException(
             status_code=400,
             detail=f"Event with name '{event_data.name}' already exists."
         )
 
-    event_date = event_data.event_date.replace(tzinfo=None)
+    stripped_date = event_data.event_date.replace(tzinfo=None)
 
     new_event = Event(
         name=event_data.name,
         total_seats=event_data.total_seats,
-        event_date=event_date
+        event_date=stripped_date
     )
 
     db.add(new_event)

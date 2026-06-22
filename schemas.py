@@ -22,7 +22,7 @@ class EventResponse(BaseModel):
     name: str
     total_seats: int
     event_date: datetime
-    created_date: datetime
+    created_at: datetime
     available_seats: int
     total_registrations: int
 
@@ -46,4 +46,4 @@ class RegistrationResponse(BaseModel):
 
 class CancelResponse(BaseModel):
     message: str
-    registration_id: id
+    registration_id: int

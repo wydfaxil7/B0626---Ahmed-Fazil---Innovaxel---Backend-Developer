@@ -5,7 +5,7 @@ DATABASE_URL = "sqlite:///./events.db"
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"Check_same_thread": False}
+    connect_args={"check_same_thread": False}
 )
 
 SessionLocal = sessionmaker(
