@@ -35,6 +35,14 @@ def create_event(
     db: Session = Depends(get_db)
 ):
 
+    """
+    Create a new event.
+
+    - **name**: Must be unique
+    - **total_seats**: Must be greater than 0
+    - **event_date**: Must be in the future
+    """
+
     existing = db.query(Event).filter(Event.name == event_date.name).first()
     if existing:
         raise HTTPException(
@@ -62,6 +70,13 @@ def get_events(
     upcoming_only: bool = Query(False, description="Filter to show only future events"),
     db: Session = Depends(get_db)
 ):
+
+    """
+    Retrieve all events sorted by date.
+
+    - **upcoming_only**: If true, returns only future events
+    """
+
     query = db.query(Event)
 
     if upcoming_only:
